@@ -1,1 +1,1 @@
-dirga
+dari dirga
