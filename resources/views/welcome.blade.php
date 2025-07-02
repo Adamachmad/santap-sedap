@@ -1,1 +1,1 @@
-dirga menco
+ini percobaan terakhir
