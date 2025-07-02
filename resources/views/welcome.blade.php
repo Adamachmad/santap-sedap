@@ -1,1 +1,1 @@
-gdehguyethedg
+ini yang terakhir|
