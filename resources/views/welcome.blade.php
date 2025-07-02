@@ -1,1 +1,1 @@
-dari dirga
+dirga menco
