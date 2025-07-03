@@ -27,6 +27,12 @@ class CustomerController extends Controller
         return view('menu', ['menus' => $menus]);
     }
 
+    public function showMenu(Menu $menu)
+    {
+        // Laravel akan otomatis mencari menu berdasarkan ID dari URL
+        return view('menu-detail', ['menu' => $menu]);
+    }
+
     /**
      * Menampilkan halaman riwayat pesanan untuk pengguna yang login.
      */

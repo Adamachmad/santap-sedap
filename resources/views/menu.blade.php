@@ -19,24 +19,26 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
                 
                 @foreach($items as $item)
-                    <div class="col">
-                        <div class="card menu-card h-100">
-                            <div class="menu-card-img-wrapper">
-                                <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : 'https://picsum.photos/id/'.($item->id+20).'/160' }}" class="menu-card-img" alt="{{ $item->nama_menu }}">
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">{{ $item->nama_menu }}</h5>
-                                <p class="card-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
-                                <div class="menu-card-actions mt-auto">
-                                    <button class="btn-icon" title="Lihat Detail"><i class="bi bi-search"></i></button>
-                                    <form action="{{ route('cart.add', $item->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn-icon" title="Tambah ke Keranjang"><i class="bi bi-cart-plus-fill"></i></button>
-                                    </form>
-                                </div>
+                <div class="col">
+                    <div class="card menu-card h-100">
+                        {{-- BUAT GAMBAR MENJADI LINK --}}
+                        <a href="{{ route('menu.show', $item->id) }}" class="menu-card-img-wrapper">
+                            <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : 'https://picsum.photos/id/'.($item->id+20).'/160' }}" class="menu-card-img" alt="{{ $item->nama_menu }}">
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ $item->nama_menu }}</h5>
+                            <p class="card-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
+                            <div class="menu-card-actions mt-auto">
+                                {{-- BUAT IKON KACA PEMBESAR MENJADI LINK --}}
+                                <a href="{{ route('menu.show', $item->id) }}" class="btn-icon" title="Lihat Detail"><i class="bi bi-search"></i></a>
+                                <form action="{{ route('cart.add', $item->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn-icon" title="Tambah ke Keranjang"><i class="bi bi-cart-plus-fill"></i></button>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
                 @endforeach
             </div>
         @endforeach

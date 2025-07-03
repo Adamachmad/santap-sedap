@@ -16,6 +16,8 @@ Route::middleware('web')->group(function () {
     */
     Route::get('/', [CustomerController::class, 'home'])->name('home');
     Route::get('/menu', [CustomerController::class, 'menu'])->name('menu');
+    Route::get('/menu/{menu}', [CustomerController::class, 'showMenu'])->name('menu.show');
+
 
     // Rute untuk Keranjang Belanja
     Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
