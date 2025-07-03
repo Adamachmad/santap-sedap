@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Transaksi;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
@@ -12,16 +13,29 @@ class CustomerController extends Controller
      */
     public function home()
     {
-        // Untuk saat ini, kita hanya menampilkan view.
-        // Nanti kita bisa tambahkan data menu favorit, dll.
         return view('home');
     }
-    public function menu()
-{
-    // Ambil semua data dari tabel menu
-    $menus = Menu::all();
 
-    // Kirim data ke view 'menu'
-    return view('menu', ['menus' => $menus]);
-}
+    /**
+     * Menampilkan halaman menu untuk pelanggan.
+     */
+    public function menu()
+    {
+        // Mengambil semua menu dan langsung mengelompokkannya berdasarkan kategori
+        $menus = Menu::all()->groupBy('kategori');
+
+        return view('menu', ['menus' => $menus]);
+    }
+
+    /**
+     * Menampilkan halaman riwayat pesanan untuk pengguna yang login.
+     */
+        public function riwayatPesanan()
+        {
+            // UBAH NAMA VARIABEL INI dari $pesanan menjadi $transaksis
+            $transaksis = Transaksi::where('user_id', auth()->id())->latest()->get();
+
+            // KIRIM VARIABEL $transaksis ke view
+            return view('pesanan.index', ['transaksis' => $transaksis]);
+        }
 }

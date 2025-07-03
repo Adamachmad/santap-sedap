@@ -9,19 +9,28 @@ class Menu extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_menu';
+    // Dengan menghapus baris 'protected $primaryKey = ...;',
+    // Laravel akan otomatis menggunakan 'id' sebagai primary key.
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'id_penjual',
         'nama_menu',
-        'deskripsi',
+        'kategori',
         'harga',
+        'deskripsi',
         'gambar',
+        'user_id',
     ];
 
-    // Relasi ke model Admin
-    public function admin()
+    /**
+     * Mendefinisikan relasi bahwa satu Menu dimiliki oleh satu User (admin).
+     */
+    public function user()
     {
-        return $this->belongsTo(Admin::class, 'id_penjual');
+        return $this->belongsTo(User::class);
     }
 }

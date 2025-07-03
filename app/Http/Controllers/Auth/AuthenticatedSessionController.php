@@ -15,9 +15,11 @@ class AuthenticatedSessionController extends Controller
      * Display the login view.
      */
     public function create(): View
-    {
-        return view('auth.login');
-    }
+{
+    // Baris ini memberitahu Laravel untuk memuat file:
+    // resources/views/auth/login.blade.php
+    return view('auth.login');
+}
 
     /**
      * Handle an incoming authentication request.

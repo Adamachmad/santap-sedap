@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
@@ -35,7 +36,7 @@ class AdminController extends Controller
     /**
      * Menyimpan menu baru ke database.
      */
-    public function storeMenu(Request $request)
+public function storeMenu(Request $request)
 {
     // 1. Validasi data input, termasuk gambar
     $request->validate([
@@ -43,7 +44,7 @@ class AdminController extends Controller
         'kategori' => 'required|string',
         'harga' => 'required|numeric|min:0',
         'deskripsi' => 'nullable|string',
-        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi gambar
+        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120', // DIUBAH: max menjadi 5120 (5MB)
     ]);
 
     $pathGambar = null;
@@ -79,18 +80,36 @@ class AdminController extends Controller
      * Mengupdate data menu di database.
      */
     public function updateMenu(Request $request, Menu $menu)
-    {
-        $request->validate([
-            'nama_menu' => 'required|string|max:255',
-            'kategori' => 'required|string',
-            'harga' => 'required|numeric|min:0',
-            'deskripsi' => 'nullable|string',
-        ]);
+{
+    // 1. Validasi data
+    $request->validate([
+        'nama_menu' => 'required|string|max:255',
+        'kategori' => 'required|string',
+        'harga' => 'required|numeric|min:0',
+        'deskripsi' => 'nullable|string',
+        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120', // DIUBAH: max menjadi 5120 (5MB)
+    ]);
 
-        $menu->update($request->all());
+    // Ambil semua data request kecuali gambar
+    $data = $request->except('gambar');
 
-        return redirect()->route('admin.menu.index')->with('success', 'Menu berhasil diupdate!');
+    // Cek jika ada file gambar baru yang diupload
+    if ($request->hasFile('gambar')) {
+        // Hapus gambar lama jika ada
+        if ($menu->gambar) {
+            Storage::disk('public')->delete($menu->gambar);
+        }
+        
+        // Simpan gambar baru dan update path di data
+        $data['gambar'] = $request->file('gambar')->store('menu-images', 'public');
     }
+
+    // 2. Update data di database
+    $menu->update($data);
+
+    // 3. Redirect kembali dengan pesan sukses
+    return redirect()->route('admin.menu.index')->with('success', 'Menu berhasil diupdate!');
+}
     public function indexPesanan()
     {
     // Mengambil semua data transaksi, diurutkan dari yang terbaru,
@@ -133,4 +152,6 @@ class AdminController extends Controller
     // Redirect kembali ke halaman detail dengan pesan sukses
     return redirect()->back()->with('success', 'Status pesanan berhasil diupdate!');
     }
+
+    
 }

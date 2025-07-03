@@ -9,8 +9,20 @@ class Transaksi extends Model
 {
     use HasFactory;
 
+    /**
+     * Tentukan nama primary key tabel ini.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id_transaksi'; // <-- TAMBAHKAN BARIS INI
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'user_id', // Pastikan ini user_id, bukan customer_id
+        'user_id',
         'total_harga',
         'pesanan',
         'status',
@@ -21,6 +33,6 @@ class Transaksi extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

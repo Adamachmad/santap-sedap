@@ -1,43 +1,45 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container py-5">
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold">Menu Santap Sedap</h1>
-        <p class="fs-5 text-muted">Pilih hidangan favoritmu dari daftar menu kami.</p>
-    </div>
-    
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        {{-- Looping untuk setiap menu dari database --}}
-        @forelse ($menus as $item)
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-<!-- {{-- Cek jika ada path gambar di database, jika tidak, gunakan placeholder --}} -->
-            <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : 'https://via.placeholder.com/300x200' }}" class="card-img-top" alt="{{ $item->nama_menu }}" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $item->nama_menu }}</h5>
-                        <p class="card-text">{{ $item->deskripsi ?? 'Deskripsi tidak tersedia.' }}</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
-                        <span class="fw-bold fs-5">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
-                        <form action="{{ route('cart.add', $item->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-primary">Pesan</button>
-                        </form> 
-                    </div>
-                </div>
-            </div>
-        @empty
-            <div class="col-12">
-                <p class="text-center">Saat ini belum ada menu yang tersedia.</p>
-            </div>
-        @endforelse
+    <div class="text-center mb-5">
+        <h1 class="display-4" style="font-family: var(--font-heading);">Menu Kami</h1>
+        <p class="fs-5 text-muted">Pilih hidangan favoritmu dari daftar menu kami yang lezat.</p>
     </div>
+
+    @if($menus->isEmpty())
+        <div class="text-center py-5">
+            <i class="bi bi-journal-x" style="font-size: 6rem; color: #ccc;"></i>
+            <h2 class="mt-4">Menu Belum Tersedia</h2>
+            <p class="text-muted">Maaf, saat ini belum ada menu yang bisa ditampilkan.</p>
+        </div>
+    @else
+        @foreach($menus as $kategori => $items)
+            <h2 class="menu-category-title">{{ $kategori }}</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+                
+                @foreach($items as $item)
+                    <div class="col">
+                        <div class="card menu-card h-100">
+                            <div class="menu-card-img-wrapper">
+                                <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : 'https://picsum.photos/id/'.($item->id+20).'/160' }}" class="menu-card-img" alt="{{ $item->nama_menu }}">
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ $item->nama_menu }}</h5>
+                                <p class="card-price">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
+                                <div class="menu-card-actions mt-auto">
+                                    <button class="btn-icon" title="Lihat Detail"><i class="bi bi-search"></i></button>
+                                    <form action="{{ route('cart.add', $item->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn-icon" title="Tambah ke Keranjang"><i class="bi bi-cart-plus-fill"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
+    @endif
 </div>
 @endsection

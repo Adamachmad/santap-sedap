@@ -7,14 +7,35 @@
 
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form action="{{ route('admin.menu.update', $menu->id) }}" method="POST">
+            {{-- Tambahkan enctype untuk upload file --}}
+            <form action="{{ route('admin.menu.update', $menu->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('PUT') {{-- Method spoofing untuk request UPDATE --}}
+                @method('PUT')
 
                 <div class="mb-3">
                     <label for="nama_menu" class="form-label">Nama Menu</label>
                     <input type="text" class="form-control" id="nama_menu" name="nama_menu" value="{{ $menu->nama_menu }}" required>
                 </div>
+                
+                {{-- Menampilkan gambar saat ini --}}
+                <div class="mb-3">
+                    <label class="form-label">Gambar Saat Ini</label>
+                    <div>
+                        @if($menu->gambar)
+                            <img src="{{ asset('storage/' . $menu->gambar) }}" alt="{{ $menu->nama_menu }}" style="max-width: 200px; height: auto;">
+                        @else
+                            <p class="text-muted">Tidak ada gambar.</p>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Input untuk mengubah gambar --}}
+                <div class="mb-3">
+                    <label for="gambar" class="form-label">Ubah Gambar (Opsional)</label>
+                    <input class="form-control" type="file" id="gambar" name="gambar">
+                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah gambar.</small>
+                </div>
+
                 <div class="mb-3">
                     <label for="kategori" class="form-label">Kategori</label>
                     <select class="form-select" id="kategori" name="kategori" required>

@@ -14,7 +14,7 @@
         </div>
         {{-- Kolom Kanan: Gambar --}}
         <div class="col-md-6">
-            <img src="https://i.ibb.co/6y40Y3v/hero-image.png" class="img-fluid rounded" alt="Nasi Ayam Lalapan">
+            <img src="{{ asset('images/ayam lalapan.jpg') }}" class="img-fluid rounded" alt="Nasi Ayam Lalapan">
         </div>
     </div>
 </div>
