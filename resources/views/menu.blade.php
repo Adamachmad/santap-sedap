@@ -18,8 +18,8 @@
         @forelse ($menus as $item)
             <div class="col">
                 <div class="card h-100 shadow-sm">
-                    {{-- Ganti src dengan gambar menu jika ada, jika tidak pakai placeholder --}}
-                    <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="{{ $item->nama_menu }}">
+<!-- {{-- Cek jika ada path gambar di database, jika tidak, gunakan placeholder --}} -->
+            <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : 'https://via.placeholder.com/300x200' }}" class="card-img-top" alt="{{ $item->nama_menu }}" style="height: 200px; object-fit: cover;">
                     <div class="card-body">
                         <h5 class="card-title">{{ $item->nama_menu }}</h5>
                         <p class="card-text">{{ $item->deskripsi ?? 'Deskripsi tidak tersedia.' }}</p>

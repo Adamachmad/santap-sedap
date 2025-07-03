@@ -8,14 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('transaksis', function (Blueprint $table) {
-            $table->id('id_transaksi');
-            $table->foreignId('id_customer')->constrained('customers', 'id_customer')->onDelete('cascade');
-            $table->decimal('total_harga', 10, 2);
-            $table->json('pesanan_detail'); // Menyimpan detail pesanan sebagai JSON
-            $table->string('status')->default('pending');
-            $table->timestamps();
-        });
+    Schema::create('transaksis', function (Blueprint $table) {
+        $table->id('id_transaksi');
+        
+        // Ganti dari customer_id ke user_id dan hubungkan ke tabel users
+        $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+        
+        $table->decimal('total_harga', 10, 2);
+        $table->text('pesanan');
+        $table->string('status')->default('pending');
+        $table->timestamps();
+    });
     }
 
     public function down(): void

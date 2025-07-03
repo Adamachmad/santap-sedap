@@ -6,11 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
 
-/*
-|--------------------------------------------------------------------------
-| Rute untuk Pelanggan (Tampilan Utama)
-|--------------------------------------------------------------------------
-*/
+// Rute untuk Pelanggan (Tampilan Utama)
 Route::get('/', [CustomerController::class, 'home'])->name('home');
 Route::get('/menu', [CustomerController::class, 'menu'])->name('menu');
 
@@ -20,29 +16,25 @@ Route::post('/keranjang/tambah/{id}', [CartController::class, 'add'])->name('car
 Route::delete('/keranjang/hapus/{id}', [CartController::class, 'remove'])->name('cart.remove');
 Route::patch('/keranjang/update/{id}', [CartController::class, 'update'])->name('cart.update');
 
-
-/*
-|--------------------------------------------------------------------------
-| Rute Bawaan Breeze (Dashboard & Profil Pengguna)
-|--------------------------------------------------------------------------
-*/
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// Rute Bawaan Breeze (Dashboard & Profil Pengguna)
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/pesanan/buat', [CartController::class, 'placeOrder'])->name('order.place');
+    Route::get('/pesanan/sukses', function () {
+        return view('cart.success');
+    })->name('order.success');
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| Rute untuk Dashboard Admin
-|--------------------------------------------------------------------------
-*/
-Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
+// Rute untuk Dashboard Admin
+Route::prefix('admin')->middleware(['auth', 'is.admin'])->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
     // Rute untuk Kelola Menu
@@ -52,8 +44,13 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('/menu/{menu}/edit', [AdminController::class, 'editMenu'])->name('menu.edit');
     Route::put('/menu/{menu}', [AdminController::class, 'updateMenu'])->name('menu.update');
     Route::delete('/menu/{menu}', [AdminController::class, 'destroyMenu'])->name('menu.destroy');
-});
+    Route::get('/pesanan', [AdminController::class, 'indexPesanan'])->name('pesanan.index');
+    Route::get('/pesanan/{transaksi}', [AdminController::class, 'showPesanan'])->name('pesanan.show');
+    Route::patch('/pesanan/{transaksi}/update-status', [AdminController::class, 'updateStatusPesanan'])->name('pesanan.updateStatus');
 
+
+
+});
 
 // Ini memuat semua rute untuk proses login, registrasi, dll. JANGAN DIHAPUS.
 require __DIR__.'/auth.php';

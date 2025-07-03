@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 
@@ -64,4 +65,32 @@ class CartController extends Controller
 
             return redirect()->back()->with('success', 'Jumlah menu berhasil diupdate!');
         }
+        public function checkout()
+        {
+        $cart = session()->get('cart', []);
+        return view('cart.checkout', ['cart' => $cart]);
+        }
+        public function placeOrder(Request $request)
+            {
+                $cart = session()->get('cart', []);
+                $total = 0;
+
+                // Hitung total harga
+                foreach ($cart as $id => $details) {
+                    $total += $details['harga'] * $details['quantity'];
+                }
+
+                // Buat transaksi baru
+                Transaksi::create([
+                    'customer_id' => auth()->user()->id, // Menggunakan id user dari tabel 'users'
+                    'total_harga' => $total,
+                    'pesanan' => json_encode($cart), // Simpan detail keranjang sebagai JSON
+                    'status' => 'pending', // Status awal pesanan
+                ]);
+
+                // Kosongkan keranjang
+                session()->forget('cart');
+
+                return redirect()->route('order.success')->with('success', 'Pesanan Anda telah berhasil dibuat!');
+            }
 }

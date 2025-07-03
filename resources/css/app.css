@@ -1,1 +1,140 @@
+/* Import Font dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Poppins:wght@400;500&display=swap');
+
+/* Import Bootstrap */
 @import 'bootstrap/dist/css/bootstrap.css';
+
+/* Definisi Variabel Warna & Font Sesuai Tema */
+:root {
+    --primary-green: #B4D7BF;
+    --primary-orange: #E86A33;
+    --dark-text: #4F4A45;
+    --font-heading: 'Oswald', sans-serif;
+    --font-body: 'Poppins', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--dark-text);
+}
+
+/* Kustomisasi Navbar */
+.navbar-custom {
+    background-color: var(--primary-green);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.navbar-custom .navbar-brand {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: white !important;
+    letter-spacing: 2px;
+}
+.navbar-custom .nav-link {
+    color: white !important;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+/* Kustomisasi Hero Section */
+.hero-section {
+    padding: 5rem 0;
+}
+.hero-section .text-overline {
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+.hero-section .display-3 {
+    font-family: var(--font-heading);
+    line-height: 1.2;
+}
+
+/* Kustomisasi Button */
+.btn-custom {
+    background-color: transparent;
+    border: 2px solid var(--dark-text);
+    color: var(--dark-text);
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-radius: 0;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+.btn-custom:hover {
+    background-color: var(--dark-text);
+    color: white;
+}
+
+
+/* Kustomisasi Footer */
+.footer-custom {
+    background-color: var(--primary-orange);
+    padding: 1.5rem 0;
+    color: white;
+}
+.footer-custom a {
+    color: white;
+    text-decoration: none;
+    margin-left: 0.5rem;
+}
+.footer-custom i {
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+/* Styling untuk Form Login & Register */
+.auth-section {
+    background-color: #f8f9fa; /* Warna latar belakang abu-abu muda */
+    padding: 5rem 0;
+}
+.auth-card {
+    background-color: var(--primary-green);
+    padding: 2.5rem;
+    border-radius: 25px;
+    color: var(--dark-text);
+}
+.auth-card .form-label {
+    font-weight: 500;
+}
+.auth-card .form-control {
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+}
+.auth-card .auth-title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--dark-text);
+}
+.btn-auth {
+    background-color: var(--primary-orange);
+    border-color: var(--primary-orange);
+    color: white;
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: 500;
+    border-radius: 10px;
+    text-transform: uppercase;
+}
+.auth-links {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+.auth-links a {
+    color: var(--dark-text);
+    font-size: 0.9rem;
+}
+.social-login {
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+.social-login i {
+    font-size: 1.8rem;
+    margin: 0 0.75rem;
+    color: var(--dark-text);
+}

@@ -9,22 +9,18 @@ class Transaksi extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_transaksi';
-
     protected $fillable = [
-        'id_customer',
+        'user_id', // Pastikan ini user_id, bukan customer_id
         'total_harga',
-        'pesanan_detail',
+        'pesanan',
         'status',
     ];
 
-    protected $casts = [
-        'pesanan_detail' => 'array', // Otomatis mengubah JSON menjadi array
-    ];
-
-    // Relasi ke model Customer
-    public function customer()
+    /**
+     * Mendefinisikan relasi bahwa satu Transaksi dimiliki oleh satu User.
+     */
+    public function user()
     {
-        return $this->belongsTo(Customer::class, 'id_customer');
+        return $this->belongsTo(User::class);
     }
 }

@@ -7,12 +7,19 @@
 
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form action="{{ route('admin.menu.store') }}" method="POST">
+            {{-- Tambahkan enctype="multipart/form-data" untuk upload file --}}
+            <form action="{{ route('admin.menu.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="nama_menu" class="form-label">Nama Menu</label>
                     <input type="text" class="form-control" id="nama_menu" name="nama_menu" required>
                 </div>
+                
+                <div class="mb-3">
+                    <label for="gambar" class="form-label">Gambar Menu</label>
+                    <input class="form-control" type="file" id="gambar" name="gambar">
+                </div>
+
                 <div class="mb-3">
                     <label for="kategori" class="form-label">Kategori</label>
                     <select class="form-select" id="kategori" name="kategori" required>

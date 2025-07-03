@@ -51,7 +51,7 @@
 
         <div class="text-end">
             <h3>Total: Rp {{ number_format($total, 0, ',', '.') }}</h3>
-            <a href="#" class="btn btn-primary mt-3">Lanjut ke Checkout</a>
+            <a href="{{ route('cart.checkout') }}" class="btn btn-primary mt-3">Lanjut ke Checkout</a>
         </div>
 
     @else
