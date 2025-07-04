@@ -46,6 +46,8 @@ Route::middleware('web')->group(function () {
         })->name('order.success');
         
         Route::get('/riwayat-pesanan', [CustomerController::class, 'riwayatPesanan'])->name('pesanan.riwayat');
+        Route::get('/pesanan/{transaksi}', [CustomerController::class, 'showPesanan'])->name('pesanan.show');
+
     });
 
     /*

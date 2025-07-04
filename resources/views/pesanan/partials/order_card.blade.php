@@ -1,6 +1,9 @@
 @php
+    // Ambil detail pesanan dari kolom JSON
     $detailPesanan = json_decode($order->pesanan, true);
+    // Ambil item pertama untuk ditampilkan sebagai preview
     $firstItem = !empty($detailPesanan) ? array_values($detailPesanan)[0] : null;
+    // Hitung total item
     $totalItems = count($detailPesanan);
 @endphp
 
@@ -23,9 +26,11 @@
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <span>Total {{ $totalItems }} produk</span>
+            <strong class="ms-3">Total: Rp {{ number_format($order->total_harga, 0, ',', '.') }}</strong>
         </div>
         <div>
-            <span class="fw-bold">Total Belanja: Rp {{ number_format($order->total_harga, 0, ',', '.') }}</span>
+            {{-- TOMBOL DETAIL DITAMBAHKAN DI SINI --}}
+            <a href="{{ route('pesanan.show', $order->id_transaksi) }}" class="btn btn-sm btn-outline-primary">Lihat Detail</a>
         </div>
     </div>
 </div>

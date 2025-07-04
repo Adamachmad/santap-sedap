@@ -317,3 +317,12 @@ body {
 .mini-cart-item-details {
     flex-grow: 1;
 }
+/* CSS untuk Animasi Fly-to-Cart */
+.fly-to-cart-img {
+    position: fixed;
+    z-index: 9999;
+    border-radius: 50%;
+    transition: all 1s ease;
+    /* Efek menyusut dan memudar saat bergerak */
+    transition-property: left, top, width, height, opacity; 
+}

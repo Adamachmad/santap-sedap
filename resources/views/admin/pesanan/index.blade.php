@@ -23,7 +23,7 @@
                         {{-- Menggunakan variabel $transaksis yang dikirim dari AdminController --}}
                         @forelse ($transaksis as $transaksi)
                         <tr>
-                            <td>#{{ $transaksi->id_transaksi }}</td>
+                            <td>{{ $transaksi->id_transaksi }}</td>
                             <td>{{ $transaksi->user->name }}</td>
                             <td>{{ $transaksi->created_at->format('d M Y, H:i') }}</td>
                             <td>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>

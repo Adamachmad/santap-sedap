@@ -27,7 +27,7 @@
 
                 {{-- Dropdown untuk Keranjang --}}
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" id="cartDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link" href="#" id="navbar-cart-icon" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-cart-fill fs-4"></i>
                         @if(session('cart') && count(session('cart')) > 0)
                             <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle" style="font-size: 0.6em;">

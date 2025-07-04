@@ -44,4 +44,18 @@ class CustomerController extends Controller
             // KIRIM VARIABEL $transaksis ke view
             return view('pesanan.index', ['transaksis' => $transaksis]);
         }
+        public function showPesanan(Transaksi $transaksi)
+        {
+            // Otorisasi: Pastikan pengguna hanya bisa melihat pesanannya sendiri
+            if (auth()->id() !== $transaksi->user_id) {
+                abort(403, 'AKSES DITOLAK');
+            }
+
+            $detailPesanan = json_decode($transaksi->pesanan, true);
+
+            return view('pesanan.show', [
+                'transaksi' => $transaksi,
+                'detailPesanan' => $detailPesanan,
+            ]);
+        }
 }

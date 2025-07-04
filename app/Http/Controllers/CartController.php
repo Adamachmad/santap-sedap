@@ -32,7 +32,7 @@ class CartController extends Controller
         // Simpan kembali cart ke dalam session
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Menu berhasil ditambahkan ke keranjang!');
+        return response()->json(['success' => 'Menu berhasil ditambahkan!']);
         }
             public function index()
         {
