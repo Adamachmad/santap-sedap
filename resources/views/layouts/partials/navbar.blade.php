@@ -71,6 +71,7 @@
                             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=fff&color=E86A33" width="32" height="32" class="rounded-circle">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a>
                              @if (auth()->user()->role == 'admin')
                                 <a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
                             @endif
