@@ -31,6 +31,7 @@ test('correct password must be provided to update password', function () {
             'password_confirmation' => 'NewPassword123',
         ]);
 
-    $response->assertSessionHasErrors('current_password');
+    // Baris di bawah ini yang diperbaiki (tambahkan 'In' dan 'updatePassword')
+    $response->assertSessionHasErrorsIn('updatePassword', 'current_password');
     $response->assertRedirect('/profile');
 });
