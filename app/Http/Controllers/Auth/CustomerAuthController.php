@@ -7,6 +7,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password; // <-- Tambahkan ini untuk validasi password ketat
 
 class CustomerAuthController extends Controller
 {
@@ -23,7 +24,15 @@ class CustomerAuthController extends Controller
         $request->validate([
             'nama_customer' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:customers',
-            'password' => 'required|string|min:8|confirmed',
+            // Gunakan array dan class Password untuk validasi kombinasi
+            'password' => [
+                'required',
+                'confirmed',
+                Password::min(8) // Minimal 8 karakter
+                    ->letters()  // Harus ada huruf
+                    ->mixedCase() // Harus ada huruf besar dan kecil
+                    ->numbers(),  // Harus ada angka
+            ],
         ]);
 
         // 2. Buat customer baru
@@ -61,9 +70,10 @@ class CustomerAuthController extends Controller
             return redirect()->intended(route('home')); // Arahkan ke home setelah login
         }
 
-        // 3. Jika gagal, kembali ke halaman login dengan pesan error
+        // 3. Jika gagal, kembali ke halaman login dengan pesan error untuk email dan password
         return back()->withErrors([
-            'email' => 'Email atau Password yang Anda masukkan salah.',
+            'email' => 'Email yang Anda masukkan salah atau tidak terdaftar.',
+            'password' => 'Password yang Anda masukkan salah.',
         ])->onlyInput('email');
     }
 
