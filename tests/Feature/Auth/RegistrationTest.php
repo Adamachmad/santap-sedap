@@ -1,19 +1,19 @@
 <?php
 
 test('registration screen can be rendered', function () {
-    $response = $this->get('/register');
+    $response = test()->get('/register');
 
     $response->assertStatus(200);
 });
 
 test('new users can register', function () {
-    $response = $this->post('/register', [
+    $response = test()->post('/register', [
         'name' => 'Test User',
         'email' => 'test@example.com',
-        'password' => 'Password123', // <-- Ubah menjadi password yang kuat
-        'password_confirmation' => 'Password123', // <-- Samakan konfirmasinya
+        'password' => 'Password123',
+        'password_confirmation' => 'Password123',
     ]);
 
-    $this->assertAuthenticated();
+    test()->assertAuthenticated();
     $response->assertRedirect('/');
 });
