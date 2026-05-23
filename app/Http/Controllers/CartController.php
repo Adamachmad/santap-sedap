@@ -53,7 +53,8 @@ class CartController extends Controller
         public function update(Request $request, $id)
         {
             $request->validate([
-                'quantity' => 'required|numeric|min:1'
+                // MED-06: Tambahkan batas maksimum quantity untuk mencegah abuse
+                'quantity' => 'required|integer|min:1|max:99'
             ]);
 
             $cart = session()->get('cart', []);
@@ -72,22 +73,54 @@ class CartController extends Controller
         }
         public function placeOrder(Request $request)
 {
-    $cart = session()->get('cart', []);
-    $total = 0;
+    // CRIT-02: Validasi field catatan untuk mencegah Stored XSS
+    $request->validate([
+        'catatan' => 'nullable|string|max:500',
+    ]);
 
-    // Hitung total harga
-    if(is_array($cart) || is_object($cart)){
-        foreach ($cart as $id => $details) {
-            $total += $details['harga'] * $details['quantity'];
-        }
+    $cart = session()->get('cart', []);
+
+    if (empty($cart)) {
+        return redirect()->route('cart.index')->with('error', 'Keranjang Anda kosong.');
     }
 
-    // Buat transaksi baru
+    $total = 0;
+    $verifiedCart = [];
+
+    // HIGH-05: Verifikasi harga dari DATABASE, bukan dari session
+    // Ini mencegah Price Manipulation Attack
+    foreach ($cart as $id => $details) {
+        $menuFromDB = \App\Models\Menu::find($id);
+
+        if (!$menuFromDB) {
+            // Item tidak valid, skip
+            continue;
+        }
+
+        $verifiedQuantity = max(1, min(99, (int) $details['quantity'])); // Clamp quantity
+        $verifiedHarga = $menuFromDB->harga; // Gunakan harga dari DB, BUKAN session
+        $total += $verifiedHarga * $verifiedQuantity;
+
+        // Rebuild cart data dengan harga yang sudah diverifikasi
+        $verifiedCart[$id] = [
+            'nama_menu' => $menuFromDB->nama_menu,
+            'quantity'  => $verifiedQuantity,
+            'harga'     => $verifiedHarga,
+            'gambar'    => $menuFromDB->gambar,
+        ];
+    }
+
+    if (empty($verifiedCart)) {
+        return redirect()->route('cart.index')->with('error', 'Tidak ada item valid dalam keranjang.');
+    }
+
+    // Buat transaksi baru dengan data yang sudah diverifikasi server-side
     Transaksi::create([
-        'user_id' => auth()->user()->id, // <-- GANTI DARI 'customer_id' MENJADI 'user_id'
+        'user_id'     => auth()->user()->id,
         'total_harga' => $total,
-        'pesanan' => json_encode($cart), // Simpan detail keranjang sebagai JSON
-        'status' => 'pending', // Status awal pesanan
+        'pesanan'     => json_encode($verifiedCart), // Data terverifikasi dari DB
+        'status'      => 'pending',
+        'catatan'     => $request->catatan, // Field catatan yang sudah divalidasi
     ]);
 
     // Kosongkan keranjang

@@ -20,8 +20,17 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', // <-- DITAMBAHKAN: Agar bisa diisi
+        // SECURITY: 'role' SENGAJA TIDAK ada di sini untuk mencegah Mass Assignment.
+        // Role hanya boleh diset secara eksplisit: $user->role = 'admin';
     ];
+
+    /**
+     * Atribut yang TIDAK boleh di-mass-assign.
+     * Ini adalah lapisan proteksi tambahan.
+     *
+     * @var array<int, string>
+     */
+    protected $guarded = ['role'];
 
     /**
      * The attributes that should be hidden for serialization.

@@ -50,11 +50,13 @@ class AdminController extends Controller
     {
         $request->validate([
             'nama_menu' => 'required|string|max:255',
-            'kategori' => 'required|string',
-            'harga' => 'required|numeric|min:0',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'kategori'  => 'required|in:Makanan,Minuman,Cemilan', // SECURITY: Whitelist nilai kategori
+            'harga'     => 'required|numeric|min:0|max:99999999',
+            'deskripsi' => 'nullable|string|max:1000',
+            // HIGH-04: Hapus 'svg' & 'gif' - keduanya bisa berisi payload berbahaya!
+            'gambar'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048|dimensions:max_width=4096,max_height=4096',
         ]);
+
 
         $pathGambar = null;
         if ($request->hasFile('gambar')) {
@@ -88,11 +90,13 @@ class AdminController extends Controller
     {
         $request->validate([
             'nama_menu' => 'required|string|max:255',
-            'kategori' => 'required|string',
-            'harga' => 'required|numeric|min:0',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'kategori'  => 'required|in:Makanan,Minuman,Cemilan', // SECURITY: Whitelist nilai kategori
+            'harga'     => 'required|numeric|min:0|max:99999999',
+            'deskripsi' => 'nullable|string|max:1000',
+            // HIGH-04: Hapus 'svg' & 'gif' - keduanya bisa berisi payload berbahaya!
+            'gambar'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048|dimensions:max_width=4096,max_height=4096',
         ]);
+
 
         $data = $request->except('gambar');
 
@@ -135,7 +139,8 @@ class AdminController extends Controller
     public function showPesanan(Transaksi $transaksi)
     {
         $transaksi->load('user');
-        $detailPesanan = json_decode($transaksi->pesanan, true);
+        // MED-03: Gunakan cast Eloquent (pesanan di-cast ke 'array' di model)
+        $detailPesanan = $transaksi->pesanan;
 
         return view('admin.pesanan.show', [
             'transaksi' => $transaksi,

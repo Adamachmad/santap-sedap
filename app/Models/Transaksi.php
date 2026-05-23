@@ -26,7 +26,19 @@ class Transaksi extends Model
         'total_harga',
         'pesanan',
         'status',
+        'catatan', // Kolom catatan pesanan yang sudah divalidasi
     ];
+
+    /**
+     * MED-03: Cast kolom JSON secara otomatis untuk keamanan dan kemudahan akses.
+     * Dengan ini, Eloquent otomatis encode/decode JSON saat read/write.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'pesanan' => 'array',
+    ];
+
 
     /**
      * Mendefinisikan relasi bahwa satu Transaksi dimiliki oleh satu User.

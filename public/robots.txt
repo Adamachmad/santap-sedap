@@ -1,2 +1,15 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /keranjang/
+Disallow: /checkout/
+Disallow: /pesanan/
+Disallow: /profile/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+
+# Allow crawling for public assets and main pages
+Allow: /
+Allow: /menu
+Allow: /storage/

@@ -51,10 +51,12 @@ class CustomerController extends Controller
                 abort(403, 'AKSES DITOLAK');
             }
 
-            $detailPesanan = json_decode($transaksi->pesanan, true);
+            // MED-03: Gunakan cast Eloquent ($casts=['pesanan'=>'array'])
+            // Laravel otomatis decode JSON dengan aman, tidak perlu json_decode() manual
+            $detailPesanan = $transaksi->pesanan;
 
             return view('pesanan.show', [
-                'transaksi' => $transaksi,
+                'transaksi'     => $transaksi,
                 'detailPesanan' => $detailPesanan,
             ]);
         }

@@ -11,6 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
 ->withMiddleware(function (Middleware $middleware) {
+    // MED-01 / LOW-01: Terapkan Security Headers ke SEMUA response web
+    $middleware->web(append: [
+        \App\Http\Middleware\SecurityHeadersMiddleware::class,
+    ]);
+
     $middleware->alias([
         'is.admin' => \App\Http\Middleware\IsAdminMiddleware::class,
     ]);

@@ -11,7 +11,8 @@ class IsAdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // Cek apakah pengguna sudah login DAN memiliki peran 'admin'
-        if (auth()->check() && auth()->user()->role == 'admin') {
+        // MED-02: Gunakan === (strict comparison) untuk mencegah PHP type juggling
+        if (auth()->check() && auth()->user()->role === 'admin') {
             // Jika ya, izinkan akses
             return $next($request);
         }

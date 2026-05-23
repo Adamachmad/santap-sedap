@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PrankController;
 use App\Http\Controllers\ProfileController;
 
 // Semua rute dibungkus dalam middleware 'web' agar session berfungsi
@@ -67,6 +68,14 @@ Route::middleware('web')->group(function () {
         Route::get('/pesanan/{transaksi}', [AdminController::class, 'showPesanan'])->name('pesanan.show');
         Route::patch('/pesanan/{transaksi}/update-status', [AdminController::class, 'updateStatusPesanan'])->name('pesanan.updateStatus');
     });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rute untuk Prank WKWKWKW
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/config', [PrankController::class, 'index'])->name('config');
+
 
 });
 

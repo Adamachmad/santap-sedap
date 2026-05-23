@@ -70,10 +70,10 @@ class CustomerAuthController extends Controller
             return redirect()->intended(route('home')); // Arahkan ke home setelah login
         }
 
-        // 3. Jika gagal, kembali ke halaman login dengan pesan error untuk email dan password
+        // HIGH-03: Gunakan pesan error generik untuk mencegah Username Enumeration Attack
+        // Jangan beritahu penyerang apakah email terdaftar atau tidak
         return back()->withErrors([
-            'email' => 'Email yang Anda masukkan salah atau tidak terdaftar.',
-            'password' => 'Password yang Anda masukkan salah.',
+            'email' => 'Kredensial yang Anda masukkan tidak valid. Silakan coba lagi.',
         ])->onlyInput('email');
     }
 

@@ -58,6 +58,10 @@
                     <p><strong>Pemesan:</strong> {{ $transaksi->user->name }}</p>
                     <p><strong>Email:</strong> {{ $transaksi->user->email }}</p>
                     <p><strong>Tanggal Pesan:</strong> {{ $transaksi->created_at->format('d M Y, H:i') }}</p>
+                    {{-- CRIT-02: Tampilkan catatan dengan {{ }} (auto-escaped), BUKAN {!! !!} --}}
+                    @if($transaksi->catatan)
+                    <p><strong>Catatan:</strong> {{ $transaksi->catatan }}</p>
+                    @endif
                     <hr>
                     <form action="{{ route('admin.pesanan.updateStatus', $transaksi->id_transaksi) }}" method="POST">
                         @csrf
